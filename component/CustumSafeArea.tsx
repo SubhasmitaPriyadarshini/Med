@@ -8,6 +8,7 @@ import {
 import React from "react";
 import { StatusBar } from "expo-status-bar";
 import { Href, useFocusEffect, useRouter } from "expo-router";
+import appColors from "@/constant/Colors";
 const CustomSafeArea: React.FC<{
   children: React.ReactNode; 
   pagetype?: "authenticated" | "un-authenticated" | "all"; 
@@ -35,10 +36,10 @@ const CustomSafeArea: React.FC<{
 //   )
   
   return (
-    <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
+    <View style={{ flex: 1, backgroundColor: appColors.White }}>
       <StatusBar style="light" />
 
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#ffffff" }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor:appColors.White,padding:24 }}>
         {/* Render NavBar */}
 
         {children}
