@@ -109,11 +109,11 @@ const TextInput10: React.FC<TextInput10Props> = ({
     title: {
       fontFamily: txtFont ? txtFont : appFonts.Inter,
       fontSize: txtSize ? txtSize : 14,
-      color: appClors.Black,
+      color: appClors.selecteditemDark,
     },
     inputContainer: {
       borderWidth: 2,
-      borderColor: isFocused ? appClors.Primary : borderColor,
+      borderColor: isFocused ? appClors.inputfieldDark : borderColor,
       borderRadius: 8,
       flexDirection: "row",
       alignItems: "center",
@@ -124,7 +124,7 @@ const TextInput10: React.FC<TextInput10Props> = ({
     input: {
       flex: 1,
       width: "100%",
-      color: disable ? "#A0A0A0" : color || appClors.Black,
+      color: disable ? "#A0A0A0" : color || appClors.selecteditemDark,
       height: "100%",
       letterSpacing: 0,
       ...(Platform.OS === "web" ? { outlineWidth: 0 } : {}),
@@ -169,7 +169,7 @@ const TextInput10: React.FC<TextInput10Props> = ({
           onFocus={() => !disable && setIsFocused(true)}
           onBlur={() => !disable && setIsFocused(false)}
           // Custom cursor color and editable flag
-          cursorColor={disable ? "transparent" : appClors.Primary}
+          cursorColor={disable ? "transparent" : appClors.inputfieldDark}
           editable={!disable}
         />
         {/* Icon types */}
@@ -180,7 +180,7 @@ const TextInput10: React.FC<TextInput10Props> = ({
           >
             <Ionicons
               name={isPasswordVisible ? "eye" : "eye-off"}
-              tintColor={iconColor ? iconColor : appClors.Primary}
+              tintColor={iconColor ? iconColor : appClors.inputfieldDark}
              size={20}
             />
           </TouchableOpacity>
@@ -191,7 +191,7 @@ const TextInput10: React.FC<TextInput10Props> = ({
         ) : iconType === "exp" ? (
           <TouchableOpacity onPress={iconOnpress}>
             <Image
-              tintColor={iconColor ? iconColor : appClors.Primary}
+              tintColor={iconColor ? iconColor : appClors.inputfieldDark}
               //  source={require("@/assets/images/Visa/note.png")}
               style={{ height: 20, width: 20 }}
             />
@@ -199,14 +199,14 @@ const TextInput10: React.FC<TextInput10Props> = ({
         ) : iconType === "info" ? (
           <TouchableOpacity onPress={iconOnpress}>
             <Image
-              tintColor={iconColor ? iconColor : appClors.Primary}
+              tintColor={iconColor ? iconColor : appClors.inputfieldDark}
               // source={require("@/assets/images/Visa/Exclamation-.png")}
               style={{ height: 20, width: 20 }}
             />
           </TouchableOpacity>
         ) : iconType === "copy" ? (
           <TouchableOpacity onPress={iconOnpress}>
-            <Ionicons name="copy-outline" color={appClors.Primary} size={17} />
+            <Ionicons name="copy-outline" color={appClors.inputfieldDark} size={17} />
           </TouchableOpacity>
         ) : null}
       </View>

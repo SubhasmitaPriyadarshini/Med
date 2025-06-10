@@ -165,7 +165,7 @@ const AnimatedHeader: React.FC = () => {
                   <Ionicons
                     name={icon.icon!} // Non-null assertion since we know icon exists
                     size={24}
-                    color={appColors.Black}
+                    color={appColors.selecteditemDark}
                   />
                 )}
               </Animated.View>
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    color: appColors.Primary,
+    color: appColors.inputfieldDark,
     fontFamily: appFonts.Inter,
     letterSpacing: 2,
   },
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: appColors.Black,
+    backgroundColor: appColors.selecteditemDark,
   },
   logo: {
     width: 24,
