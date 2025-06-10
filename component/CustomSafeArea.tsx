@@ -1,14 +1,12 @@
+import appColors from "@/constant/Colors";
+import { useRouter } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import React from "react";
 import {
-  View,
   SafeAreaView,
   useWindowDimensions,
-  Platform,
-  ScrollView,
+  View
 } from "react-native";
-import React from "react";
-import { StatusBar } from "expo-status-bar";
-import { Href, useFocusEffect, useRouter } from "expo-router";
-import appColors from "@/constant/Colors";
 const CustomSafeArea: React.FC<{
   children: React.ReactNode; 
   pagetype?: "authenticated" | "un-authenticated" | "all"; 
