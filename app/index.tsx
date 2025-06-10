@@ -1,3 +1,6 @@
+import AnimatedHeader from "@/component/AnimatedHeader";
+import TextInputComponent from "@/component/TextInputComponent";
+import TextInput from "@/component/TextInputComponent";
 import { Text, View } from "react-native";
 
 export default function Index() {
@@ -5,12 +8,9 @@ export default function Index() {
     <View
       style={{
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        borderWidth: 1,
       }}
     >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
+      <TextInputComponent title="name" placeholder="Name" iconType="eye" password showHidePassword/>
     </View>
   );
 }
