@@ -1,6 +1,5 @@
-import appColors from "@/constant/Colors";
+import { useTheme } from "@/theme/useTheme";
 import { useRouter } from "expo-router";
-import { StatusBar } from "expo-status-bar";
 import React from "react";
 import {
   SafeAreaView,
@@ -12,7 +11,8 @@ const CustomSafeArea: React.FC<{
   pagetype?: "authenticated" | "un-authenticated" | "all"; 
 }> = ({ children, pagetype }) => {
   const { width, height } = useWindowDimensions();
-   const router = useRouter()
+   const router = useRouter();
+   const {theme}=useTheme();
 //   const dispatch = useDispatch()
 //   const tknsts = useSelector((state : RootState)=>state.appredux.userToken);
 
@@ -34,10 +34,8 @@ const CustomSafeArea: React.FC<{
 //   )
   
   return (
-    <View style={{ flex: 1, backgroundColor: appColors.White }}>
-      <StatusBar style="light" />
-
-      <SafeAreaView style={{ flex: 1, backgroundColor:appColors.White,padding:24 }}>
+    <View style={{ flex: 1, backgroundColor:theme.colors.background.primary }}>
+      <SafeAreaView style={{ flex: 1, backgroundColor:theme.colors.background.primary,padding:24 }}>
         {/* Render NavBar */}
 
         {children}

@@ -1,6 +1,7 @@
 import appColors from "@/constant/Colors";
 import appFonts from "@/constant/Fonts";
 import { Typography } from "@/constant/typography";
+import { useTheme } from "@/theme/useTheme";
 import { Image } from "expo-image";
 import React from "react";
 import { DimensionValue, Text, TouchableOpacity } from "react-native";
@@ -24,12 +25,14 @@ const Button: React.FC<ButtonProps> = ({
   borderColor,
   onPress
 }) => {
+
+     const { theme } = useTheme();
   return (
     <TouchableOpacity
       style={{
         height: height || 48,
         width: width || "100%",
-        backgroundColor: backgroundColor || appColors.Primary,
+        backgroundColor: backgroundColor || appColors.ButtonLinerGradient1,
         borderRadius: 12,
         paddingHorizontal: 48,
         paddingVertical: 8,
@@ -48,7 +51,7 @@ const Button: React.FC<ButtonProps> = ({
       />
       <Text
         style={{
-          color: appColors.White,
+    color:appColors.backgorundColorLight,
           ...Typography.bold,
           fontFamily: appFonts.Inter,
         }}
