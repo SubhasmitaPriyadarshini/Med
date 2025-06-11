@@ -8,6 +8,7 @@ const appColors = {
    inputfieldLight:"#F1F5F9",
    selecteditemLight:"#252D41",
    selecteditemDark:"#4A5A82",
+   
   };
   
   export default appColors;

@@ -11,14 +11,14 @@ import {
 } from "react-native";
 
 interface ButtonProps {
-  height: number;
-  width: DimensionValue;
-  borderColor: string;
-  imagesrc: any;
-  title: any;
+  height?: number;
+  width?: DimensionValue;
+  borderColor?: string;
+  imagesrc?: any;
+  title?: any;
   useGradient?: boolean;
   onPress: () => void;
-  backgroundcolor: string;
+  backgroundcolor?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -39,8 +39,8 @@ const Button: React.FC<ButtonProps> = ({
       borderWidth: 1,
       borderColor: borderColor,
       paddingHorizontal: 8,
-      paddingVertical: 48,
-      alignSelf: "center",
+      // paddingVertical: 48,
+      alignItems: "center",
       flexDirection: "row",
       justifyContent: "center",
       gap: 12,
@@ -59,13 +59,17 @@ const Button: React.FC<ButtonProps> = ({
           ]}
           style={styles.main}
         >
+          {imagesrc && (
           <Image source={imagesrc} style={{ height: 20, width: 20 }} />
-          <Text>{title}</Text>
+          )}
+          <Text style={{color: "#fff", fontSize: 16, fontWeight: "bold" }}>{title}</Text>
         </LinearGradient>
       ) : (
         <View style={styles.main}>
+           {imagesrc && (
           <Image source={imagesrc} style={{ height: 20, width: 20 }} />
-          <Text>{title}</Text>
+          )}
+          <Text style={{color: "#fff", fontSize: 16, fontWeight: "bold" }}>{title}</Text>
         </View>
       )}
     </TouchableOpacity>
