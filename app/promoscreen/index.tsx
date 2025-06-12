@@ -164,7 +164,7 @@ const PromoScreen = () => {
             title="Next"
             height={48}
             width={"100%"}
-            onPress={() => router.push("/")}
+            onPress={() => router.push("/auth/termsandcondition")}
             useGradient={true}
           />
           <Text
