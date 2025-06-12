@@ -3,7 +3,7 @@ import CustomSafeArea from "@/component/CustomSafeArea";
 import appColors from "@/constant/Colors";
 import { Typography } from "@/constant/typography";
 import { useTheme } from "@/theme/useTheme";
-import { Image } from "expo-image";
+import { Image as ExpoImage } from "expo-image"; // Renamed to avoid conflict
 import { useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 import {
@@ -15,6 +15,7 @@ import {
   StatusBar,
   Text,
   View,
+  Image as RNImage, // Import React Native Image for getSize
 } from "react-native";
 
 const slides = [
@@ -26,17 +27,17 @@ const slides = [
   {
     image: require("@/assets/images/splash/promoImage2.png"),
     title: "RELAX MORE",
-    subtitle: "Unwind and find serenity in a\n guided meditation sessions",
+    subtitle: "Unwind and find serenity in a\nguided meditation sessions",
   },
   {
     image: require("@/assets/images/splash/promoImage3.png"),
     title: "SLEEP LONGER",
-    subtitle: "Calm racing mind and prepare/n  your body for deep sleep",
+    subtitle: "Calm racing mind and prepare\nyour body for deep sleep",
   },
   {
     image: require("@/assets/images/splash/promoImage4.png"),
-    title: "LIVE BETTER ",
-    subtitle: "Invest in Personal sense of inner peace and balance",
+    title: "LIVE BETTER",
+    subtitle: "Invest in personal sense of inner peace and balance",
   },
 ];
 
@@ -46,11 +47,44 @@ const PromoScreen = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollX = useRef(new Animated.Value(0)).current;
   const scrollRef = useRef<ScrollView>(null);
-
   const { width } = Dimensions.get("window");
+
+  // State to store image dimensions
+  const [imageDimensions, setImageDimensions] = useState<
+    { width: number; height: number }[]
+  >(
+    slides.map(() => ({
+      width: 0,
+      height: 0,
+    }))
+  );
+
+  // Preload images and get their dimensions
+  useEffect(() => {
+    const loadImageDimensions = async () => {
+      // Preload images using expo-image
+      await Promise.all(slides.map((slide) => ExpoImage.prefetch(slide.image)));
+
+      // Get dimensions using React Native Image
+      const dimensions = await Promise.all(
+        slides.map((slide) =>
+          new Promise<{ width: number; height: number }>((resolve) => {
+            RNImage.getSize(
+              slide.image,
+              (width: number, height: number) => resolve({ width, height }),
+              () => resolve({ width: 0, height: 0 }) // Fallback in case of error
+            );
+          })
+        )
+      );
+      setImageDimensions(dimensions);
+    };
+    loadImageDimensions();
+  }, []);
+
   useEffect(() => {
     const interval = setInterval(() => {
-      let nextIndex = (currentIndex + 1) % slides.length;
+      const nextIndex = (currentIndex + 1) % slides.length;
       setCurrentIndex(nextIndex);
       scrollRef.current?.scrollTo({ x: nextIndex * width, animated: true });
     }, 3000);
@@ -65,10 +99,14 @@ const PromoScreen = () => {
     setCurrentIndex(newIndex);
   };
 
+  // Define padding and calculate image width
+  const paddingHorizontal = 16;
+  const imageWidth = width - 2 * paddingHorizontal; // Account for padding on both sides
+
   return (
     <CustomSafeArea>
       <StatusBar />
-      <View style={{ height: "100%", width: "100%", gap: 24 }}>
+      <View style={{ gap: 24 }}>
         <Animated.ScrollView
           ref={scrollRef}
           horizontal
@@ -80,86 +118,103 @@ const PromoScreen = () => {
           )}
           onMomentumScrollEnd={onMomentumScrollEnd}
           scrollEventThrottle={16}
-          style={{ flex: 1 }}
-        >
-          {slides.map((item, index) => (
-            <View key={index}>
-              <Image
-                source={item.image}
-                style={{ height: 458, width: width, borderRadius: 12 }}
-                contentFit="cover"
-              />
-              <View
-                style={{
-                  justifyContent: "center",
-                  alignItems: "center",
-                  gap: 10,
-                }}
-              >
-                <Text
-                  style={{
-                    ...(Typography.bold.boldXL as any),
-                    color: theme.colors.text.primary,
-                    textAlign: "center",
-                  }}
-                >
-                  {item.title}
-                </Text>
-                <Text
-                  style={{
-                    ...(Typography.bold.boldL as any),
-                    color: theme.colors.text.primary,
-                    textAlign: "center",
-                  }}
-                >
-                  {item.subtitle}
-                </Text>
-              </View>
-            </View>
-          ))}
-        </Animated.ScrollView>
-        <View
-          style={{
-            flexDirection: "row",
-            gap: 10,
-            justifyContent: "center",
+          style={{ flexGrow: 0 }}
+          contentContainerStyle={{
             alignItems: "center",
           }}
         >
-          <View
-            style={{
-              width: 24,
-              height: 9,
-              borderRadius: 12,
-              backgroundColor: appColors.ButtonLinerGradient1,
-            }}
-          />
-          <View
-            style={{
-              width: 10,
-              height: 10,
-              borderRadius: 100,
-              backgroundColor: "#D2EEE9",
-            }}
-          />
-          <View
-            style={{
-              width: 10,
-              height: 10,
-              borderRadius: 100,
-              backgroundColor: "#D2EEE9",
-            }}
-          />
-          <View
-            style={{
-              width: 10,
-              height: 10,
-              borderRadius: 100,
-              backgroundColor: "#D2EEE9",
-            }}
-          />
+          {slides.map((item, index) => {
+            // Calculate the height based on the image's aspect ratio
+            const { width: imgWidth, height: imgHeight } =
+              imageDimensions[index];
+            const aspectRatio =
+              imgWidth && imgHeight ? imgWidth / imgHeight : 1;
+            const calculatedHeight = imgWidth
+              ? (imageWidth / imgWidth) * imgHeight
+              : 458; // Fallback height if dimensions aren't loaded
+
+            return (
+              <View
+                key={index}
+                style={{
+                  width: width,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  paddingHorizontal: paddingHorizontal,
+                  gap: 20,
+                }}
+              >
+                <View
+                  style={{
+                    width: imageWidth,
+                    height: calculatedHeight,
+                    borderRadius: 12,
+                    overflow: "hidden",
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  <ExpoImage
+                    source={item.image}
+                    style={{
+                      width: imageWidth,
+                      height: calculatedHeight,
+                      borderRadius: 12,
+                    }}
+                    contentFit="cover"
+                  />
+                </View>
+                <View style={{ gap: 10 }}>
+                  <Text
+                    style={{
+                      ...(Typography.bold.boldXL as any),
+                      color: theme.colors.text.primary,
+                      textAlign: "center",
+                    }}
+                  >
+                    {item.title}
+                  </Text>
+                  <Text
+                    style={{
+                      ...(Typography.bold.boldL as any),
+                      color: theme.colors.text.primary,
+                      textAlign: "center",
+                    }}
+                  >
+                    {item.subtitle}
+                  </Text>
+                </View>
+              </View>
+            );
+          })}
+        </Animated.ScrollView>
+
+        {/* Dynamic Dot Indicators */}
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 10,
+          }}
+        >
+          {slides.map((_, index) => (
+            <View
+              key={index}
+              style={{
+                width: currentIndex === index ? 24 : 10,
+                height: 10,
+                borderRadius: 12,
+                backgroundColor:
+                  currentIndex === index
+                    ? appColors.ButtonLinerGradient1
+                    : "#D2EEE9",
+              }}
+            />
+          ))}
         </View>
-        <View style={{ gap: 8 }}>
+
+        {/* Buttons */}
+        <View style={{ gap: 8, paddingHorizontal: 16 }}>
           <Button
             title="Next"
             height={48}
@@ -184,6 +239,3 @@ const PromoScreen = () => {
 };
 
 export default PromoScreen;
-
-
-
