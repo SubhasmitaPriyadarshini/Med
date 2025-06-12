@@ -11,11 +11,11 @@ import {
   Dimensions,
   NativeScrollEvent,
   NativeSyntheticEvent,
+  Image as RNImage,
   ScrollView,
   StatusBar,
   Text,
   View,
-  Image as RNImage, // Import React Native Image for getSize
 } from "react-native";
 
 const slides = [
