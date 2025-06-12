@@ -1,6 +1,6 @@
 import { useTheme } from "@/theme/useTheme";
 import { Image } from "expo-image";
-import { useRouter } from "expo-router";
+import { Href, useRouter } from "expo-router";
 import React, { useEffect } from "react";
 import { View } from "react-native";
 
@@ -9,7 +9,7 @@ const Splash = () => {
   const { theme } = useTheme();
   useEffect(() => {
     const timer = setTimeout(() => {
-      router.replace("/promoscreen");
+      router.replace("/promoscreen" as Href);
     }, 1000);
 
     return () => clearTimeout(timer);
